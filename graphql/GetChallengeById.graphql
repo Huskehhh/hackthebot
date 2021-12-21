@@ -1,0 +1,12 @@
+query GetChallengeById($htb_id: Int!) {
+  htb_challenges(where: {htb_id: {_eq: $htb_id}}) {
+    htb_id
+    difficulty
+    category
+    id
+    machine_avatar
+    points
+    name
+    release_date
+  }
+}

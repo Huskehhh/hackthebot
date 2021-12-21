@@ -1,0 +1,5 @@
+mutation InsertSolveForUser($user_name: String!, $user_id: Int!, $solve_type: String!, $challenge_id: Int!) {
+  insert_htb_solves(objects: {solve_type: $solve_type, user_id: $user_id, user_name: $user_name, challenge_id: $challenge_id}) {
+    affected_rows
+  }
+}

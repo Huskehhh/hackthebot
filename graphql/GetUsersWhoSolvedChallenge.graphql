@@ -1,0 +1,5 @@
+query GetUsersWhoSolvedChallenge($challenge_id: Int!) {
+  htb_solves(where: {challenge_id: {_eq: $challenge_id}}) {
+    user_name
+  }
+}

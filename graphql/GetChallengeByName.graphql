@@ -1,0 +1,12 @@
+query GetChallengeByName($name: String!) {
+  htb_challenges(where: {name: {_ilike: $name}}) {
+    htb_id
+    difficulty
+    category
+    id
+    machine_avatar
+    points
+    name
+    release_date
+  }
+}

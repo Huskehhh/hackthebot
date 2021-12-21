@@ -1,0 +1,9 @@
+query GetSolvesForUserWithName($user_name: String!) {
+  htb_solves(where: {user_name: {_eq: $user_name}}) {
+    user_name
+    user_id
+    solve_type
+    id
+    challenge_id
+  }
+}

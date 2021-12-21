@@ -1,0 +1,1654 @@
+schema {
+  query: query_root
+  mutation: mutation_root
+  subscription: subscription_root
+}
+
+"""whether this query should be cached (Hasura Cloud only)"""
+directive @cached(
+  """measured in seconds"""
+  ttl: Int! = 60
+
+  """refresh the cache entry"""
+  refresh: Boolean! = false
+) on QUERY
+
+"""
+Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
+"""
+input Int_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+
+"""
+Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
+"""
+input String_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+
+  """does the column match the given case-insensitive pattern"""
+  _ilike: String
+  _in: [String!]
+
+  """
+  does the column match the given POSIX regular expression, case insensitive
+  """
+  _iregex: String
+  _is_null: Boolean
+
+  """does the column match the given pattern"""
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+
+  """does the column NOT match the given case-insensitive pattern"""
+  _nilike: String
+  _nin: [String!]
+
+  """
+  does the column NOT match the given POSIX regular expression, case insensitive
+  """
+  _niregex: String
+
+  """does the column NOT match the given pattern"""
+  _nlike: String
+
+  """
+  does the column NOT match the given POSIX regular expression, case sensitive
+  """
+  _nregex: String
+
+  """does the column NOT match the given SQL regular expression"""
+  _nsimilar: String
+
+  """
+  does the column match the given POSIX regular expression, case sensitive
+  """
+  _regex: String
+
+  """does the column match the given SQL regular expression"""
+  _similar: String
+}
+
+scalar bigint
+
+"""
+Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'.
+"""
+input bigint_comparison_exp {
+  _eq: bigint
+  _gt: bigint
+  _gte: bigint
+  _in: [bigint!]
+  _is_null: Boolean
+  _lt: bigint
+  _lte: bigint
+  _neq: bigint
+  _nin: [bigint!]
+}
+
+"""
+columns and relationships of "htb.challenges"
+"""
+type htb_challenges {
+  category: Int!
+  difficulty: String!
+  htb_id: Int!
+  id: Int!
+  machine_avatar: String
+  name: String!
+  points: Int!
+  release_date: String!
+}
+
+"""
+aggregated selection of "htb.challenges"
+"""
+type htb_challenges_aggregate {
+  aggregate: htb_challenges_aggregate_fields
+  nodes: [htb_challenges!]!
+}
+
+"""
+aggregate fields of "htb.challenges"
+"""
+type htb_challenges_aggregate_fields {
+  avg: htb_challenges_avg_fields
+  count(columns: [htb_challenges_select_column!], distinct: Boolean): Int!
+  max: htb_challenges_max_fields
+  min: htb_challenges_min_fields
+  stddev: htb_challenges_stddev_fields
+  stddev_pop: htb_challenges_stddev_pop_fields
+  stddev_samp: htb_challenges_stddev_samp_fields
+  sum: htb_challenges_sum_fields
+  var_pop: htb_challenges_var_pop_fields
+  var_samp: htb_challenges_var_samp_fields
+  variance: htb_challenges_variance_fields
+}
+
+"""aggregate avg on columns"""
+type htb_challenges_avg_fields {
+  category: Float
+  htb_id: Float
+  id: Float
+  points: Float
+}
+
+"""
+Boolean expression to filter rows from the table "htb.challenges". All fields are combined with a logical 'AND'.
+"""
+input htb_challenges_bool_exp {
+  _and: [htb_challenges_bool_exp!]
+  _not: htb_challenges_bool_exp
+  _or: [htb_challenges_bool_exp!]
+  category: Int_comparison_exp
+  difficulty: String_comparison_exp
+  htb_id: Int_comparison_exp
+  id: Int_comparison_exp
+  machine_avatar: String_comparison_exp
+  name: String_comparison_exp
+  points: Int_comparison_exp
+  release_date: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "htb.challenges"
+"""
+enum htb_challenges_constraint {
+  """unique or primary key constraint"""
+  challenges_htb_id_key
+
+  """unique or primary key constraint"""
+  challenges_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "htb.challenges"
+"""
+input htb_challenges_inc_input {
+  category: Int
+  htb_id: Int
+  id: Int
+  points: Int
+}
+
+"""
+input type for inserting data into table "htb.challenges"
+"""
+input htb_challenges_insert_input {
+  category: Int
+  difficulty: String
+  htb_id: Int
+  id: Int
+  machine_avatar: String
+  name: String
+  points: Int
+  release_date: String
+}
+
+"""aggregate max on columns"""
+type htb_challenges_max_fields {
+  category: Int
+  difficulty: String
+  htb_id: Int
+  id: Int
+  machine_avatar: String
+  name: String
+  points: Int
+  release_date: String
+}
+
+"""aggregate min on columns"""
+type htb_challenges_min_fields {
+  category: Int
+  difficulty: String
+  htb_id: Int
+  id: Int
+  machine_avatar: String
+  name: String
+  points: Int
+  release_date: String
+}
+
+"""
+response of any mutation on the table "htb.challenges"
+"""
+type htb_challenges_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [htb_challenges!]!
+}
+
+"""
+on conflict condition type for table "htb.challenges"
+"""
+input htb_challenges_on_conflict {
+  constraint: htb_challenges_constraint!
+  update_columns: [htb_challenges_update_column!]! = []
+  where: htb_challenges_bool_exp
+}
+
+"""Ordering options when selecting data from "htb.challenges"."""
+input htb_challenges_order_by {
+  category: order_by
+  difficulty: order_by
+  htb_id: order_by
+  id: order_by
+  machine_avatar: order_by
+  name: order_by
+  points: order_by
+  release_date: order_by
+}
+
+"""primary key columns input for table: htb_challenges"""
+input htb_challenges_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "htb.challenges"
+"""
+enum htb_challenges_select_column {
+  """column name"""
+  category
+
+  """column name"""
+  difficulty
+
+  """column name"""
+  htb_id
+
+  """column name"""
+  id
+
+  """column name"""
+  machine_avatar
+
+  """column name"""
+  name
+
+  """column name"""
+  points
+
+  """column name"""
+  release_date
+}
+
+"""
+input type for updating data in table "htb.challenges"
+"""
+input htb_challenges_set_input {
+  category: Int
+  difficulty: String
+  htb_id: Int
+  id: Int
+  machine_avatar: String
+  name: String
+  points: Int
+  release_date: String
+}
+
+"""aggregate stddev on columns"""
+type htb_challenges_stddev_fields {
+  category: Float
+  htb_id: Float
+  id: Float
+  points: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type htb_challenges_stddev_pop_fields {
+  category: Float
+  htb_id: Float
+  id: Float
+  points: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type htb_challenges_stddev_samp_fields {
+  category: Float
+  htb_id: Float
+  id: Float
+  points: Float
+}
+
+"""aggregate sum on columns"""
+type htb_challenges_sum_fields {
+  category: Int
+  htb_id: Int
+  id: Int
+  points: Int
+}
+
+"""
+update columns of table "htb.challenges"
+"""
+enum htb_challenges_update_column {
+  """column name"""
+  category
+
+  """column name"""
+  difficulty
+
+  """column name"""
+  htb_id
+
+  """column name"""
+  id
+
+  """column name"""
+  machine_avatar
+
+  """column name"""
+  name
+
+  """column name"""
+  points
+
+  """column name"""
+  release_date
+}
+
+"""aggregate var_pop on columns"""
+type htb_challenges_var_pop_fields {
+  category: Float
+  htb_id: Float
+  id: Float
+  points: Float
+}
+
+"""aggregate var_samp on columns"""
+type htb_challenges_var_samp_fields {
+  category: Float
+  htb_id: Float
+  id: Float
+  points: Float
+}
+
+"""aggregate variance on columns"""
+type htb_challenges_variance_fields {
+  category: Float
+  htb_id: Float
+  id: Float
+  points: Float
+}
+
+"""
+columns and relationships of "htb.solves"
+"""
+type htb_solves {
+  challenge_id: Int!
+  id: Int!
+  solve_type: String!
+  user_id: Int!
+  user_name: String!
+}
+
+"""
+aggregated selection of "htb.solves"
+"""
+type htb_solves_aggregate {
+  aggregate: htb_solves_aggregate_fields
+  nodes: [htb_solves!]!
+}
+
+"""
+aggregate fields of "htb.solves"
+"""
+type htb_solves_aggregate_fields {
+  avg: htb_solves_avg_fields
+  count(columns: [htb_solves_select_column!], distinct: Boolean): Int!
+  max: htb_solves_max_fields
+  min: htb_solves_min_fields
+  stddev: htb_solves_stddev_fields
+  stddev_pop: htb_solves_stddev_pop_fields
+  stddev_samp: htb_solves_stddev_samp_fields
+  sum: htb_solves_sum_fields
+  var_pop: htb_solves_var_pop_fields
+  var_samp: htb_solves_var_samp_fields
+  variance: htb_solves_variance_fields
+}
+
+"""aggregate avg on columns"""
+type htb_solves_avg_fields {
+  challenge_id: Float
+  id: Float
+  user_id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "htb.solves". All fields are combined with a logical 'AND'.
+"""
+input htb_solves_bool_exp {
+  _and: [htb_solves_bool_exp!]
+  _not: htb_solves_bool_exp
+  _or: [htb_solves_bool_exp!]
+  challenge_id: Int_comparison_exp
+  id: Int_comparison_exp
+  solve_type: String_comparison_exp
+  user_id: Int_comparison_exp
+  user_name: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "htb.solves"
+"""
+enum htb_solves_constraint {
+  """unique or primary key constraint"""
+  solves_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "htb.solves"
+"""
+input htb_solves_inc_input {
+  challenge_id: Int
+  id: Int
+  user_id: Int
+}
+
+"""
+input type for inserting data into table "htb.solves"
+"""
+input htb_solves_insert_input {
+  challenge_id: Int
+  id: Int
+  solve_type: String
+  user_id: Int
+  user_name: String
+}
+
+"""aggregate max on columns"""
+type htb_solves_max_fields {
+  challenge_id: Int
+  id: Int
+  solve_type: String
+  user_id: Int
+  user_name: String
+}
+
+"""aggregate min on columns"""
+type htb_solves_min_fields {
+  challenge_id: Int
+  id: Int
+  solve_type: String
+  user_id: Int
+  user_name: String
+}
+
+"""
+response of any mutation on the table "htb.solves"
+"""
+type htb_solves_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [htb_solves!]!
+}
+
+"""
+on conflict condition type for table "htb.solves"
+"""
+input htb_solves_on_conflict {
+  constraint: htb_solves_constraint!
+  update_columns: [htb_solves_update_column!]! = []
+  where: htb_solves_bool_exp
+}
+
+"""Ordering options when selecting data from "htb.solves"."""
+input htb_solves_order_by {
+  challenge_id: order_by
+  id: order_by
+  solve_type: order_by
+  user_id: order_by
+  user_name: order_by
+}
+
+"""primary key columns input for table: htb_solves"""
+input htb_solves_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "htb.solves"
+"""
+enum htb_solves_select_column {
+  """column name"""
+  challenge_id
+
+  """column name"""
+  id
+
+  """column name"""
+  solve_type
+
+  """column name"""
+  user_id
+
+  """column name"""
+  user_name
+}
+
+"""
+input type for updating data in table "htb.solves"
+"""
+input htb_solves_set_input {
+  challenge_id: Int
+  id: Int
+  solve_type: String
+  user_id: Int
+  user_name: String
+}
+
+"""aggregate stddev on columns"""
+type htb_solves_stddev_fields {
+  challenge_id: Float
+  id: Float
+  user_id: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type htb_solves_stddev_pop_fields {
+  challenge_id: Float
+  id: Float
+  user_id: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type htb_solves_stddev_samp_fields {
+  challenge_id: Float
+  id: Float
+  user_id: Float
+}
+
+"""aggregate sum on columns"""
+type htb_solves_sum_fields {
+  challenge_id: Int
+  id: Int
+  user_id: Int
+}
+
+"""
+update columns of table "htb.solves"
+"""
+enum htb_solves_update_column {
+  """column name"""
+  challenge_id
+
+  """column name"""
+  id
+
+  """column name"""
+  solve_type
+
+  """column name"""
+  user_id
+
+  """column name"""
+  user_name
+}
+
+"""aggregate var_pop on columns"""
+type htb_solves_var_pop_fields {
+  challenge_id: Float
+  id: Float
+  user_id: Float
+}
+
+"""aggregate var_samp on columns"""
+type htb_solves_var_samp_fields {
+  challenge_id: Float
+  id: Float
+  user_id: Float
+}
+
+"""aggregate variance on columns"""
+type htb_solves_variance_fields {
+  challenge_id: Float
+  id: Float
+  user_id: Float
+}
+
+"""mutation root"""
+type mutation_root {
+  """
+  delete data from the table: "htb.challenges"
+  """
+  delete_htb_challenges(
+    """filter the rows which have to be deleted"""
+    where: htb_challenges_bool_exp!
+  ): htb_challenges_mutation_response
+
+  """
+  delete single row from the table: "htb.challenges"
+  """
+  delete_htb_challenges_by_pk(id: Int!): htb_challenges
+
+  """
+  delete data from the table: "htb.solves"
+  """
+  delete_htb_solves(
+    """filter the rows which have to be deleted"""
+    where: htb_solves_bool_exp!
+  ): htb_solves_mutation_response
+
+  """
+  delete single row from the table: "htb.solves"
+  """
+  delete_htb_solves_by_pk(id: Int!): htb_solves
+
+  """
+  delete data from the table: "revo.graph_data"
+  """
+  delete_revo_graph_data(
+    """filter the rows which have to be deleted"""
+    where: revo_graph_data_bool_exp!
+  ): revo_graph_data_mutation_response
+
+  """
+  delete single row from the table: "revo.graph_data"
+  """
+  delete_revo_graph_data_by_pk(entry: Int!): revo_graph_data
+
+  """
+  delete data from the table: "revo.gyms"
+  """
+  delete_revo_gyms(
+    """filter the rows which have to be deleted"""
+    where: revo_gyms_bool_exp!
+  ): revo_gyms_mutation_response
+
+  """
+  delete single row from the table: "revo.gyms"
+  """
+  delete_revo_gyms_by_pk(id: Int!): revo_gyms
+
+  """
+  insert data into the table: "htb.challenges"
+  """
+  insert_htb_challenges(
+    """the rows to be inserted"""
+    objects: [htb_challenges_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: htb_challenges_on_conflict
+  ): htb_challenges_mutation_response
+
+  """
+  insert a single row into the table: "htb.challenges"
+  """
+  insert_htb_challenges_one(
+    """the row to be inserted"""
+    object: htb_challenges_insert_input!
+
+    """on conflict condition"""
+    on_conflict: htb_challenges_on_conflict
+  ): htb_challenges
+
+  """
+  insert data into the table: "htb.solves"
+  """
+  insert_htb_solves(
+    """the rows to be inserted"""
+    objects: [htb_solves_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: htb_solves_on_conflict
+  ): htb_solves_mutation_response
+
+  """
+  insert a single row into the table: "htb.solves"
+  """
+  insert_htb_solves_one(
+    """the row to be inserted"""
+    object: htb_solves_insert_input!
+
+    """on conflict condition"""
+    on_conflict: htb_solves_on_conflict
+  ): htb_solves
+
+  """
+  insert data into the table: "revo.graph_data"
+  """
+  insert_revo_graph_data(
+    """the rows to be inserted"""
+    objects: [revo_graph_data_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: revo_graph_data_on_conflict
+  ): revo_graph_data_mutation_response
+
+  """
+  insert a single row into the table: "revo.graph_data"
+  """
+  insert_revo_graph_data_one(
+    """the row to be inserted"""
+    object: revo_graph_data_insert_input!
+
+    """on conflict condition"""
+    on_conflict: revo_graph_data_on_conflict
+  ): revo_graph_data
+
+  """
+  insert data into the table: "revo.gyms"
+  """
+  insert_revo_gyms(
+    """the rows to be inserted"""
+    objects: [revo_gyms_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: revo_gyms_on_conflict
+  ): revo_gyms_mutation_response
+
+  """
+  insert a single row into the table: "revo.gyms"
+  """
+  insert_revo_gyms_one(
+    """the row to be inserted"""
+    object: revo_gyms_insert_input!
+
+    """on conflict condition"""
+    on_conflict: revo_gyms_on_conflict
+  ): revo_gyms
+
+  """
+  update data of the table: "htb.challenges"
+  """
+  update_htb_challenges(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: htb_challenges_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: htb_challenges_set_input
+
+    """filter the rows which have to be updated"""
+    where: htb_challenges_bool_exp!
+  ): htb_challenges_mutation_response
+
+  """
+  update single row of the table: "htb.challenges"
+  """
+  update_htb_challenges_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: htb_challenges_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: htb_challenges_set_input
+    pk_columns: htb_challenges_pk_columns_input!
+  ): htb_challenges
+
+  """
+  update data of the table: "htb.solves"
+  """
+  update_htb_solves(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: htb_solves_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: htb_solves_set_input
+
+    """filter the rows which have to be updated"""
+    where: htb_solves_bool_exp!
+  ): htb_solves_mutation_response
+
+  """
+  update single row of the table: "htb.solves"
+  """
+  update_htb_solves_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: htb_solves_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: htb_solves_set_input
+    pk_columns: htb_solves_pk_columns_input!
+  ): htb_solves
+
+  """
+  update data of the table: "revo.graph_data"
+  """
+  update_revo_graph_data(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: revo_graph_data_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: revo_graph_data_set_input
+
+    """filter the rows which have to be updated"""
+    where: revo_graph_data_bool_exp!
+  ): revo_graph_data_mutation_response
+
+  """
+  update single row of the table: "revo.graph_data"
+  """
+  update_revo_graph_data_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: revo_graph_data_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: revo_graph_data_set_input
+    pk_columns: revo_graph_data_pk_columns_input!
+  ): revo_graph_data
+
+  """
+  update data of the table: "revo.gyms"
+  """
+  update_revo_gyms(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: revo_gyms_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: revo_gyms_set_input
+
+    """filter the rows which have to be updated"""
+    where: revo_gyms_bool_exp!
+  ): revo_gyms_mutation_response
+
+  """
+  update single row of the table: "revo.gyms"
+  """
+  update_revo_gyms_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: revo_gyms_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: revo_gyms_set_input
+    pk_columns: revo_gyms_pk_columns_input!
+  ): revo_gyms
+}
+
+"""column ordering options"""
+enum order_by {
+  """in ascending order, nulls last"""
+  asc
+
+  """in ascending order, nulls first"""
+  asc_nulls_first
+
+  """in ascending order, nulls last"""
+  asc_nulls_last
+
+  """in descending order, nulls first"""
+  desc
+
+  """in descending order, nulls first"""
+  desc_nulls_first
+
+  """in descending order, nulls last"""
+  desc_nulls_last
+}
+
+type query_root {
+  """
+  fetch data from the table: "htb.challenges"
+  """
+  htb_challenges(
+    """distinct select on columns"""
+    distinct_on: [htb_challenges_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [htb_challenges_order_by!]
+
+    """filter the rows returned"""
+    where: htb_challenges_bool_exp
+  ): [htb_challenges!]!
+
+  """
+  fetch aggregated fields from the table: "htb.challenges"
+  """
+  htb_challenges_aggregate(
+    """distinct select on columns"""
+    distinct_on: [htb_challenges_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [htb_challenges_order_by!]
+
+    """filter the rows returned"""
+    where: htb_challenges_bool_exp
+  ): htb_challenges_aggregate!
+
+  """fetch data from the table: "htb.challenges" using primary key columns"""
+  htb_challenges_by_pk(id: Int!): htb_challenges
+
+  """
+  fetch data from the table: "htb.solves"
+  """
+  htb_solves(
+    """distinct select on columns"""
+    distinct_on: [htb_solves_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [htb_solves_order_by!]
+
+    """filter the rows returned"""
+    where: htb_solves_bool_exp
+  ): [htb_solves!]!
+
+  """
+  fetch aggregated fields from the table: "htb.solves"
+  """
+  htb_solves_aggregate(
+    """distinct select on columns"""
+    distinct_on: [htb_solves_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [htb_solves_order_by!]
+
+    """filter the rows returned"""
+    where: htb_solves_bool_exp
+  ): htb_solves_aggregate!
+
+  """fetch data from the table: "htb.solves" using primary key columns"""
+  htb_solves_by_pk(id: Int!): htb_solves
+
+  """
+  fetch data from the table: "revo.graph_data"
+  """
+  revo_graph_data(
+    """distinct select on columns"""
+    distinct_on: [revo_graph_data_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [revo_graph_data_order_by!]
+
+    """filter the rows returned"""
+    where: revo_graph_data_bool_exp
+  ): [revo_graph_data!]!
+
+  """
+  fetch aggregated fields from the table: "revo.graph_data"
+  """
+  revo_graph_data_aggregate(
+    """distinct select on columns"""
+    distinct_on: [revo_graph_data_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [revo_graph_data_order_by!]
+
+    """filter the rows returned"""
+    where: revo_graph_data_bool_exp
+  ): revo_graph_data_aggregate!
+
+  """fetch data from the table: "revo.graph_data" using primary key columns"""
+  revo_graph_data_by_pk(entry: Int!): revo_graph_data
+
+  """
+  fetch data from the table: "revo.gyms"
+  """
+  revo_gyms(
+    """distinct select on columns"""
+    distinct_on: [revo_gyms_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [revo_gyms_order_by!]
+
+    """filter the rows returned"""
+    where: revo_gyms_bool_exp
+  ): [revo_gyms!]!
+
+  """
+  fetch aggregated fields from the table: "revo.gyms"
+  """
+  revo_gyms_aggregate(
+    """distinct select on columns"""
+    distinct_on: [revo_gyms_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [revo_gyms_order_by!]
+
+    """filter the rows returned"""
+    where: revo_gyms_bool_exp
+  ): revo_gyms_aggregate!
+
+  """fetch data from the table: "revo.gyms" using primary key columns"""
+  revo_gyms_by_pk(id: Int!): revo_gyms
+}
+
+"""
+columns and relationships of "revo.graph_data"
+"""
+type revo_graph_data {
+  count: Int!
+  entry: Int!
+  epoch: bigint!
+  gym_id: Int!
+}
+
+"""
+aggregated selection of "revo.graph_data"
+"""
+type revo_graph_data_aggregate {
+  aggregate: revo_graph_data_aggregate_fields
+  nodes: [revo_graph_data!]!
+}
+
+"""
+aggregate fields of "revo.graph_data"
+"""
+type revo_graph_data_aggregate_fields {
+  avg: revo_graph_data_avg_fields
+  count(columns: [revo_graph_data_select_column!], distinct: Boolean): Int!
+  max: revo_graph_data_max_fields
+  min: revo_graph_data_min_fields
+  stddev: revo_graph_data_stddev_fields
+  stddev_pop: revo_graph_data_stddev_pop_fields
+  stddev_samp: revo_graph_data_stddev_samp_fields
+  sum: revo_graph_data_sum_fields
+  var_pop: revo_graph_data_var_pop_fields
+  var_samp: revo_graph_data_var_samp_fields
+  variance: revo_graph_data_variance_fields
+}
+
+"""aggregate avg on columns"""
+type revo_graph_data_avg_fields {
+  count: Float
+  entry: Float
+  epoch: Float
+  gym_id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "revo.graph_data". All fields are combined with a logical 'AND'.
+"""
+input revo_graph_data_bool_exp {
+  _and: [revo_graph_data_bool_exp!]
+  _not: revo_graph_data_bool_exp
+  _or: [revo_graph_data_bool_exp!]
+  count: Int_comparison_exp
+  entry: Int_comparison_exp
+  epoch: bigint_comparison_exp
+  gym_id: Int_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "revo.graph_data"
+"""
+enum revo_graph_data_constraint {
+  """unique or primary key constraint"""
+  graph_data_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "revo.graph_data"
+"""
+input revo_graph_data_inc_input {
+  count: Int
+  entry: Int
+  epoch: bigint
+  gym_id: Int
+}
+
+"""
+input type for inserting data into table "revo.graph_data"
+"""
+input revo_graph_data_insert_input {
+  count: Int
+  entry: Int
+  epoch: bigint
+  gym_id: Int
+}
+
+"""aggregate max on columns"""
+type revo_graph_data_max_fields {
+  count: Int
+  entry: Int
+  epoch: bigint
+  gym_id: Int
+}
+
+"""aggregate min on columns"""
+type revo_graph_data_min_fields {
+  count: Int
+  entry: Int
+  epoch: bigint
+  gym_id: Int
+}
+
+"""
+response of any mutation on the table "revo.graph_data"
+"""
+type revo_graph_data_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [revo_graph_data!]!
+}
+
+"""
+on conflict condition type for table "revo.graph_data"
+"""
+input revo_graph_data_on_conflict {
+  constraint: revo_graph_data_constraint!
+  update_columns: [revo_graph_data_update_column!]! = []
+  where: revo_graph_data_bool_exp
+}
+
+"""Ordering options when selecting data from "revo.graph_data"."""
+input revo_graph_data_order_by {
+  count: order_by
+  entry: order_by
+  epoch: order_by
+  gym_id: order_by
+}
+
+"""primary key columns input for table: revo_graph_data"""
+input revo_graph_data_pk_columns_input {
+  entry: Int!
+}
+
+"""
+select columns of table "revo.graph_data"
+"""
+enum revo_graph_data_select_column {
+  """column name"""
+  count
+
+  """column name"""
+  entry
+
+  """column name"""
+  epoch
+
+  """column name"""
+  gym_id
+}
+
+"""
+input type for updating data in table "revo.graph_data"
+"""
+input revo_graph_data_set_input {
+  count: Int
+  entry: Int
+  epoch: bigint
+  gym_id: Int
+}
+
+"""aggregate stddev on columns"""
+type revo_graph_data_stddev_fields {
+  count: Float
+  entry: Float
+  epoch: Float
+  gym_id: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type revo_graph_data_stddev_pop_fields {
+  count: Float
+  entry: Float
+  epoch: Float
+  gym_id: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type revo_graph_data_stddev_samp_fields {
+  count: Float
+  entry: Float
+  epoch: Float
+  gym_id: Float
+}
+
+"""aggregate sum on columns"""
+type revo_graph_data_sum_fields {
+  count: Int
+  entry: Int
+  epoch: bigint
+  gym_id: Int
+}
+
+"""
+update columns of table "revo.graph_data"
+"""
+enum revo_graph_data_update_column {
+  """column name"""
+  count
+
+  """column name"""
+  entry
+
+  """column name"""
+  epoch
+
+  """column name"""
+  gym_id
+}
+
+"""aggregate var_pop on columns"""
+type revo_graph_data_var_pop_fields {
+  count: Float
+  entry: Float
+  epoch: Float
+  gym_id: Float
+}
+
+"""aggregate var_samp on columns"""
+type revo_graph_data_var_samp_fields {
+  count: Float
+  entry: Float
+  epoch: Float
+  gym_id: Float
+}
+
+"""aggregate variance on columns"""
+type revo_graph_data_variance_fields {
+  count: Float
+  entry: Float
+  epoch: Float
+  gym_id: Float
+}
+
+"""
+columns and relationships of "revo.gyms"
+"""
+type revo_gyms {
+  id: Int!
+  name: String!
+}
+
+"""
+aggregated selection of "revo.gyms"
+"""
+type revo_gyms_aggregate {
+  aggregate: revo_gyms_aggregate_fields
+  nodes: [revo_gyms!]!
+}
+
+"""
+aggregate fields of "revo.gyms"
+"""
+type revo_gyms_aggregate_fields {
+  avg: revo_gyms_avg_fields
+  count(columns: [revo_gyms_select_column!], distinct: Boolean): Int!
+  max: revo_gyms_max_fields
+  min: revo_gyms_min_fields
+  stddev: revo_gyms_stddev_fields
+  stddev_pop: revo_gyms_stddev_pop_fields
+  stddev_samp: revo_gyms_stddev_samp_fields
+  sum: revo_gyms_sum_fields
+  var_pop: revo_gyms_var_pop_fields
+  var_samp: revo_gyms_var_samp_fields
+  variance: revo_gyms_variance_fields
+}
+
+"""aggregate avg on columns"""
+type revo_gyms_avg_fields {
+  id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "revo.gyms". All fields are combined with a logical 'AND'.
+"""
+input revo_gyms_bool_exp {
+  _and: [revo_gyms_bool_exp!]
+  _not: revo_gyms_bool_exp
+  _or: [revo_gyms_bool_exp!]
+  id: Int_comparison_exp
+  name: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "revo.gyms"
+"""
+enum revo_gyms_constraint {
+  """unique or primary key constraint"""
+  gyms_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "revo.gyms"
+"""
+input revo_gyms_inc_input {
+  id: Int
+}
+
+"""
+input type for inserting data into table "revo.gyms"
+"""
+input revo_gyms_insert_input {
+  id: Int
+  name: String
+}
+
+"""aggregate max on columns"""
+type revo_gyms_max_fields {
+  id: Int
+  name: String
+}
+
+"""aggregate min on columns"""
+type revo_gyms_min_fields {
+  id: Int
+  name: String
+}
+
+"""
+response of any mutation on the table "revo.gyms"
+"""
+type revo_gyms_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [revo_gyms!]!
+}
+
+"""
+on conflict condition type for table "revo.gyms"
+"""
+input revo_gyms_on_conflict {
+  constraint: revo_gyms_constraint!
+  update_columns: [revo_gyms_update_column!]! = []
+  where: revo_gyms_bool_exp
+}
+
+"""Ordering options when selecting data from "revo.gyms"."""
+input revo_gyms_order_by {
+  id: order_by
+  name: order_by
+}
+
+"""primary key columns input for table: revo_gyms"""
+input revo_gyms_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "revo.gyms"
+"""
+enum revo_gyms_select_column {
+  """column name"""
+  id
+
+  """column name"""
+  name
+}
+
+"""
+input type for updating data in table "revo.gyms"
+"""
+input revo_gyms_set_input {
+  id: Int
+  name: String
+}
+
+"""aggregate stddev on columns"""
+type revo_gyms_stddev_fields {
+  id: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type revo_gyms_stddev_pop_fields {
+  id: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type revo_gyms_stddev_samp_fields {
+  id: Float
+}
+
+"""aggregate sum on columns"""
+type revo_gyms_sum_fields {
+  id: Int
+}
+
+"""
+update columns of table "revo.gyms"
+"""
+enum revo_gyms_update_column {
+  """column name"""
+  id
+
+  """column name"""
+  name
+}
+
+"""aggregate var_pop on columns"""
+type revo_gyms_var_pop_fields {
+  id: Float
+}
+
+"""aggregate var_samp on columns"""
+type revo_gyms_var_samp_fields {
+  id: Float
+}
+
+"""aggregate variance on columns"""
+type revo_gyms_variance_fields {
+  id: Float
+}
+
+type subscription_root {
+  """
+  fetch data from the table: "htb.challenges"
+  """
+  htb_challenges(
+    """distinct select on columns"""
+    distinct_on: [htb_challenges_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [htb_challenges_order_by!]
+
+    """filter the rows returned"""
+    where: htb_challenges_bool_exp
+  ): [htb_challenges!]!
+
+  """
+  fetch aggregated fields from the table: "htb.challenges"
+  """
+  htb_challenges_aggregate(
+    """distinct select on columns"""
+    distinct_on: [htb_challenges_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [htb_challenges_order_by!]
+
+    """filter the rows returned"""
+    where: htb_challenges_bool_exp
+  ): htb_challenges_aggregate!
+
+  """fetch data from the table: "htb.challenges" using primary key columns"""
+  htb_challenges_by_pk(id: Int!): htb_challenges
+
+  """
+  fetch data from the table: "htb.solves"
+  """
+  htb_solves(
+    """distinct select on columns"""
+    distinct_on: [htb_solves_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [htb_solves_order_by!]
+
+    """filter the rows returned"""
+    where: htb_solves_bool_exp
+  ): [htb_solves!]!
+
+  """
+  fetch aggregated fields from the table: "htb.solves"
+  """
+  htb_solves_aggregate(
+    """distinct select on columns"""
+    distinct_on: [htb_solves_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [htb_solves_order_by!]
+
+    """filter the rows returned"""
+    where: htb_solves_bool_exp
+  ): htb_solves_aggregate!
+
+  """fetch data from the table: "htb.solves" using primary key columns"""
+  htb_solves_by_pk(id: Int!): htb_solves
+
+  """
+  fetch data from the table: "revo.graph_data"
+  """
+  revo_graph_data(
+    """distinct select on columns"""
+    distinct_on: [revo_graph_data_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [revo_graph_data_order_by!]
+
+    """filter the rows returned"""
+    where: revo_graph_data_bool_exp
+  ): [revo_graph_data!]!
+
+  """
+  fetch aggregated fields from the table: "revo.graph_data"
+  """
+  revo_graph_data_aggregate(
+    """distinct select on columns"""
+    distinct_on: [revo_graph_data_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [revo_graph_data_order_by!]
+
+    """filter the rows returned"""
+    where: revo_graph_data_bool_exp
+  ): revo_graph_data_aggregate!
+
+  """fetch data from the table: "revo.graph_data" using primary key columns"""
+  revo_graph_data_by_pk(entry: Int!): revo_graph_data
+
+  """
+  fetch data from the table: "revo.gyms"
+  """
+  revo_gyms(
+    """distinct select on columns"""
+    distinct_on: [revo_gyms_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [revo_gyms_order_by!]
+
+    """filter the rows returned"""
+    where: revo_gyms_bool_exp
+  ): [revo_gyms!]!
+
+  """
+  fetch aggregated fields from the table: "revo.gyms"
+  """
+  revo_gyms_aggregate(
+    """distinct select on columns"""
+    distinct_on: [revo_gyms_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [revo_gyms_order_by!]
+
+    """filter the rows returned"""
+    where: revo_gyms_bool_exp
+  ): revo_gyms_aggregate!
+
+  """fetch data from the table: "revo.gyms" using primary key columns"""
+  revo_gyms_by_pk(id: Int!): revo_gyms
+}
+
