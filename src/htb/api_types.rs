@@ -1,5 +1,5 @@
-use base64::decode;
 use anyhow::Error;
+use base64::decode;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
@@ -188,7 +188,7 @@ mod tests {
 
     fn read_file_to_string(filename: &str) -> String {
         let mut base = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-        base.push("resources/test");
+        base.push("test_resources");
         base.push(filename);
 
         fs::read_to_string(base).unwrap()

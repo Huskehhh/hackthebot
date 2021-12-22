@@ -1,0 +1,28 @@
+{
+    "profile": {
+        "activity": [
+            {
+                "date": "2021-07-14T12:47:47.000000Z",
+                "date_diff": "48 minutes ago",
+                "object_type": "machine",
+                "type": "root",
+                "first_blood": false,
+                "id": 344,
+                "name": "Love",
+                "points": 20,
+                "machine_avatar": "/storage/avatars/c00774d8d806b82c709c596937a92d14_thumb.png"
+            },
+            {
+                "date": "2021-07-13T14:15:05.000000Z",
+                "date_diff": "23 hours ago",
+                "object_type": "machine",
+                "type": "user",
+                "first_blood": false,
+                "id": 344,
+                "name": "Love",
+                "points": 10,
+                "machine_avatar": "/storage/avatars/c00774d8d806b82c709c596937a92d14_thumb.png"
+            }
+        ]
+    }
+}
