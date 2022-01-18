@@ -64,7 +64,7 @@ pub async fn process_rank_status(data: &mut ScheduleRunnerData) -> Result<(), Er
     if let Err(why) =
         update_htb_channel_topic_with_stats(&latest_rank.data, &data.channel_id, &data.http).await
     {
-        eprintln!("Error when creating embed of team stats... {}", why);
+        eprintln!("Error when updating the HTB channel topic... {}", why);
     }
 
     Ok(())

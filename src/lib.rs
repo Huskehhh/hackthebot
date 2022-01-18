@@ -73,6 +73,7 @@ pub async fn update_htb_channel_topic_with_stats(
         "Team rank {}, Points: {}. Last updated: {}",
         stats.rank, stats.points, timestamp_string
     );
+    
     match channel_id.edit(&http, |c| c.topic(new_channel_topic)).await {
         Ok(_) => Ok(()),
         Err(why) => Err(anyhow!("Error when updating channel topic: {}", why)),
@@ -101,7 +102,7 @@ pub fn create_reqwest_client(api_key: &str, token_type: &str) -> Result<Client, 
     headers.insert("Content-Type", content_type_header);
 
     Ok(ClientBuilder::new()
-        .timeout(Duration::from_secs(5))
+        .timeout(Duration::from_secs(10))
         .cookie_store(true)
         .default_headers(headers)
         .build()?)
@@ -118,7 +119,7 @@ pub fn create_hasura_reqwest_client(hasura_api_key: &str) -> Result<Client, Erro
     headers.insert("Content-Type", content_type_header);
 
     Ok(ClientBuilder::new()
-        .timeout(Duration::from_secs(5))
+        .timeout(Duration::from_secs(10))
         .default_headers(headers)
         .build()?)
 }

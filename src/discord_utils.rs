@@ -17,13 +17,17 @@ pub fn populate_embed_from_challenge(
 ) {
     let challenge_category_name = get_challenge_category_from_id(challenge.category);
 
-    e.title(format!("❓ {} ❓", challenge.name));
+    e.title(format!("🏴 {}", challenge.name));
     e.field("📚 Category", &challenge_category_name, true);
     e.field("💰 Points", challenge.points, true);
 
     if let Some(solving_users) = solving_users {
         let solving_string = solving_users.join(", ");
         e.field("🏴‍ Solved", solving_string, true);
+    }
+
+    if let Some(avatar) = &challenge.machine_avatar {
+        e.thumbnail(format!("https://www.hackthebox.eu/{}", avatar));
     }
 }
 
