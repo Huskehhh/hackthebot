@@ -169,10 +169,12 @@ async fn main() {
 
     std::thread::spawn(move || loop {
         if let Ok(lock) = data_arc1.lock().as_mut() {
+            println!("Updating HTB challenges...");
             if let Err(why) = update_htb_challenges(&lock.htb_api) {
                 eprintln!("Error updating HTB challenges/machines: {:?}", why);
             }
 
+            println!("Processing current rank...");
             if let Err(why) = process_rank_status(lock) {
                 eprintln!("Error updating team rank status: {:?}", why);
             }
@@ -184,13 +186,19 @@ async fn main() {
 
     std::thread::spawn(move || loop {
         if let Ok(lock) = data_arc2.lock().as_mut() {
-            if let Err(why) = process_new_solves(lock) {
-                eprintln!("Error processing HTB solves: {:?}", why);
+            println!("Polling for new solves new solves...");
+            match process_new_solves(lock) {
+                Ok(_) => {
+                    println!("Successfully processed HTB solves!");
+                }
+                Err(why) => {
+                    eprintln!("Error processing HTB solves: {:?}", why);
+                }
             }
         }
 
-        // Sleep for 3 minutes.
-        std::thread::sleep(Duration::from_secs(60 * 3));
+        // Sleep for 5 minutes.
+        std::thread::sleep(Duration::from_secs(60 * 5));
     });
 
     if let Err(why) = client.start().await {
