@@ -4,7 +4,7 @@ use anyhow::Error;
 use reqwest::{Client, ClientBuilder};
 use serde_json::json;
 
-use crate::{jwt_still_valid, create_reqwest_client};
+use crate::{create_reqwest_client, jwt_still_valid};
 
 use super::api_types::*;
 
@@ -119,7 +119,10 @@ impl HTBApiClient {
     }
 
     pub async fn get_team_rank(&self) -> Result<RankStats, Error> {
-        let url = format!("{}/rankings/team/ranking_bracket/{}", API_URL, &self.config.team_id);
+        let url = format!(
+            "{}/rankings/team/ranking_bracket/{}",
+            API_URL, &self.config.team_id
+        );
 
         let team_rank = self
             .client
