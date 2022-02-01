@@ -73,7 +73,7 @@ pub async fn update_htb_channel_topic_with_stats(
         "Team rank {}, Points: {}. Last updated: {}",
         stats.rank, stats.points, timestamp_string
     );
-    
+
     match channel_id.edit(&http, |c| c.topic(new_channel_topic)).await {
         Ok(_) => Ok(()),
         Err(why) => Err(anyhow!("Error when updating channel topic: {}", why)),

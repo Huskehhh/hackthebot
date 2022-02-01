@@ -14,3 +14,7 @@ test:
 # Finds unused dependencies
 udeps:
 	RUSTC_BOOTSTRAP=1 cargo udeps --all-targets --backend depinfo
+
+# Format all code using rustfmt
+fmt:
+	cargo fmt --all
