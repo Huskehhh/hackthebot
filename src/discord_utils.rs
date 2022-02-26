@@ -50,18 +50,17 @@ pub async fn announce_solve(
     let solve_type = capitalise_first(&solve.solve_type);
 
     // Build up the content based around the solve type
-    let content;
-    if solve_type.eq("Challenge") {
-        content = format!(
+    let content = if solve_type.eq("Challenge") {
+        format!(
             "🏴 {} has been solved by {}",
             &challenge.name, &solve.solver
-        );
+        )
     } else {
-        content = format!(
+        format!(
             "🏴 {} has been owned by {} on {}",
             solve_type, &solve.solver, &challenge.name
-        );
-    }
+        )
+    };
 
     channel_id
         .send_message(http, |message| {
