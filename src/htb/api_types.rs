@@ -51,9 +51,9 @@ pub struct GetRecentTeamActivityData {
     #[serde(rename = "type")]
     pub solve_type: String,
     pub object_type: String,
-    pub id: i32,
+    pub id: i64,
     pub name: String,
-    pub points: i32,
+    pub points: i64,
     pub challenge_category: Option<String>,
 }
 

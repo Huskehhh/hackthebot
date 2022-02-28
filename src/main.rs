@@ -186,7 +186,7 @@ async fn main() {
 
     std::thread::spawn(move || loop {
         if let Ok(lock) = data_arc2.lock().as_mut() {
-            println!("Polling for new solves new solves...");
+            println!("Polling for new solves...");
             match process_new_solves(lock) {
                 Ok(_) => {
                     println!("Successfully processed HTB solves!");
