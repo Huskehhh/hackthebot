@@ -197,8 +197,8 @@ async fn main() {
             }
         }
 
-        // Sleep for 5 minutes.
-        std::thread::sleep(Duration::from_secs(60 * 5));
+        // Sleep for 1 minute.
+        std::thread::sleep(Duration::from_secs(60));
     });
 
     if let Err(why) = client.start().await {
