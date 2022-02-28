@@ -32,6 +32,7 @@ pub trait GraphQLProvider {
         &self,
         user_id: i64,
         challenge_id: i64,
+        challenge_name: String,
     ) -> Result<bool, Error>;
     async fn get_solves_for_user_by_name(&self, user_name: String) -> Result<Vec<Solve>, Error>;
 }

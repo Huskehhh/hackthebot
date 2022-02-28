@@ -82,7 +82,7 @@ pub async fn process_new_solves(data: &mut ScheduleRunnerData) -> Result<(), Err
         for solve in &user_activity.profile.activity {
             // If the challenge has already been solve by this user, we need to skip.
             if hasura_provider
-                .is_challenge_solved_for_user(member.id, solve.id)
+                .is_challenge_solved_for_user(member.id, solve.id, solve.name.clone())
                 .await?
             {
                 continue;

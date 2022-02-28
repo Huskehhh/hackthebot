@@ -160,10 +160,12 @@ impl GraphQLProvider for HasuraProvider {
         &self,
         user_id: i64,
         challenge_id: i64,
+        challenge_name: String,
     ) -> Result<bool, Error> {
         let variables = is_challenge_solved_for_user::Variables {
             user_id,
             challenge_id,
+            challenge_name,
         };
 
         let response_body = post_graphql::<IsChallengeSolvedForUser, _>(
