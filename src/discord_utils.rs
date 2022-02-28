@@ -1,6 +1,8 @@
 use hackthebot::{get_challenge_category_from_id, graphql::graphql_types::Challenge};
+
+use serenity::builder::CreateEmbed;
 use serenity::framework::standard::CommandResult;
-use serenity::{builder::CreateEmbed, http::Http, model::id::ChannelId};
+use serenity::{http::Http, model::id::ChannelId};
 
 #[derive(Debug)]
 pub struct SolveToAnnounce<'a> {

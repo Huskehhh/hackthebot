@@ -186,7 +186,7 @@ async fn main() {
 
     std::thread::spawn(move || loop {
         if let Ok(lock) = data_arc2.lock().as_mut() {
-            println!("Polling for new solves new solves...");
+            println!("Polling for new solves...");
             match process_new_solves(lock) {
                 Ok(_) => {
                     println!("Successfully processed HTB solves!");
@@ -197,8 +197,8 @@ async fn main() {
             }
         }
 
-        // Sleep for 5 minutes.
-        std::thread::sleep(Duration::from_secs(60 * 5));
+        // Sleep for 1 minute.
+        std::thread::sleep(Duration::from_secs(60));
     });
 
     if let Err(why) = client.start().await {
