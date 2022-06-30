@@ -1,7 +1,7 @@
 use std::{env, time::Duration};
 
-use anyhow::{anyhow, Error, Result};
 use chrono::{DateTime, Local};
+use color_eyre::eyre::{eyre, Error, Result};
 use dashmap::DashMap;
 use hasura::hasura_provider::HasuraProvider;
 use htb::api_types::*;
@@ -76,7 +76,7 @@ pub async fn update_htb_channel_topic_with_stats(
 
     match channel_id.edit(&http, |c| c.topic(new_channel_topic)).await {
         Ok(_) => Ok(()),
-        Err(why) => Err(anyhow!("Error when updating channel topic: {}", why)),
+        Err(why) => Err(eyre!("Error when updating channel topic: {}", why)),
     }
 }
 

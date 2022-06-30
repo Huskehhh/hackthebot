@@ -1,7 +1,7 @@
 #![allow(clippy::too_many_arguments)]
 
-use anyhow::Error;
 use async_trait::async_trait;
+use color_eyre::eyre::Error;
 
 use super::graphql_types::*;
 

@@ -1,5 +1,5 @@
-use anyhow::{Error, Result};
 use async_trait::async_trait;
+use color_eyre::eyre::{Error, Result};
 use graphql_client::reqwest::post_graphql;
 
 use crate::graphql::{graphql_provider::GraphQLProvider, graphql_types::*};

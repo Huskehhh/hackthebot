@@ -1,4 +1,5 @@
-use anyhow::Error;
+use async_mutex::MutexGuard;
+use color_eyre::eyre::Error;
 use hackthebot::{
     get_hasura_client, graphql::graphql_provider::GraphQLProvider, htb::api_types::HTBApiClient,
     ScheduleRunnerData, HASURA_PROVIDER,
@@ -59,7 +60,7 @@ pub async fn update_htb_challenges(htb_api: &HTBApiClient) -> Result<(), Error> 
 }
 
 #[tokio::main]
-pub async fn process_rank_status(data: &mut ScheduleRunnerData) -> Result<(), Error> {
+pub async fn process_rank_status(mut data: MutexGuard<ScheduleRunnerData>) -> Result<(), Error> {
     data.htb_api.handle_token_renewal().await?;
     let latest_rank = data.htb_api.get_team_rank().await?;
 
@@ -73,7 +74,7 @@ pub async fn process_rank_status(data: &mut ScheduleRunnerData) -> Result<(), Er
 }
 
 #[tokio::main]
-pub async fn process_new_solves(data: &mut ScheduleRunnerData) -> Result<(), Error> {
+pub async fn process_new_solves(mut data: MutexGuard<ScheduleRunnerData>) -> Result<(), Error> {
     data.htb_api.handle_token_renewal().await?;
     let recent_team_solves = &data.htb_api.get_recent_team_activity().await?;
     let hasura_provider = HASURA_PROVIDER.get_or_init(get_hasura_client).await;

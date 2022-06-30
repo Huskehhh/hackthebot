@@ -1,5 +1,5 @@
-use anyhow::Error;
 use base64::decode;
+use color_eyre::eyre::Error;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 

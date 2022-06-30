@@ -1,4 +1,6 @@
-use std::sync::{Arc, Mutex};
+use async_mutex::Mutex;
+use futures::executor::block_on;
+use std::sync::Arc;
 use std::time::Duration;
 use std::{collections::HashSet, env};
 
@@ -9,6 +11,7 @@ use hackthebot::{load_categories_to_cache, ScheduleRunnerData};
 use serenity::async_trait;
 use serenity::framework::StandardFramework;
 use serenity::model::channel::Message;
+use serenity::prelude::GatewayIntents;
 use serenity::{
     client::Context,
     framework::standard::{help_commands, Args, CommandGroup, CommandResult, HelpOptions},
@@ -74,8 +77,9 @@ async fn normal_message(_ctx: &Context, msg: &Message) {
 }
 
 #[hook]
-async fn dispatch_error(ctx: &Context, msg: &Message, error: DispatchError) {
+async fn dispatch_error(ctx: &Context, msg: &Message, error: DispatchError, _command_name: &str) {
     if let DispatchError::Ratelimited(info) = error {
+        // We notify them only once.
         if info.is_first_try {
             let _ = msg
                 .channel_id
@@ -92,10 +96,16 @@ async fn dispatch_error(ctx: &Context, msg: &Message, error: DispatchError) {
 async fn main() {
     // Load all environment variables from .env file.
     dotenv().ok();
+    color_eyre::install().expect("Error when setting up color_eyre");
 
     let token =
         env::var("DISCORD_TOKEN").expect("Expected a token in your environment (DISCORD_TOKEN)");
     let owner_id_str = env::var("OWNER_ID").expect("Expected an OWNER_ID in your environment!");
+    let application_id =
+        env::var("APPLICATION_ID").expect("Expected an APPLICATION_ID in your environment!");
+    let application_id = application_id
+        .parse::<u64>()
+        .expect("Could not parse APPLICATION_ID!");
 
     let owner_id = owner_id_str
         .parse::<u64>()
@@ -115,14 +125,12 @@ async fn main() {
         .help(&HELP)
         .group(&HTBER_GROUP);
 
-    let mut client = Client::builder(&token)
+    let intents = GatewayIntents::all();
+    let mut client = Client::builder(&token, intents)
         .framework(framework)
         .event_handler(Handler)
         .await
         .expect("Error creating client");
-
-    // Copy the token so we can use it for HTB as well
-    let token_copy = token.clone();
 
     // Load all required values for HTB API
     let team_id = env::var("HTB_TEAM_ID")
@@ -146,7 +154,7 @@ async fn main() {
     let htb_api = new_htbapi_instance(htb_config)
         .await
         .expect("Error when creating HTBApi instance...");
-    let http = Http::new_with_token(&token_copy);
+    let http = Http::new_with_application_id(&token, application_id);
     let channel_id = ChannelId(htb_channel_id);
 
     let scheduler_data = ScheduleRunnerData {
@@ -158,7 +166,7 @@ async fn main() {
     let threadsafe_data = Arc::new(Mutex::new(scheduler_data));
 
     // Load the categories into the cache once on boot.
-    let data = threadsafe_data.lock().unwrap();
+    let data = threadsafe_data.lock().await;
     if let Err(why) = load_categories_to_cache(&data.htb_api).await {
         eprintln!("Error loading categories to cache... {}", why);
     }
@@ -168,16 +176,16 @@ async fn main() {
     let data_arc2 = threadsafe_data.clone();
 
     std::thread::spawn(move || loop {
-        if let Ok(lock) = data_arc1.lock().as_mut() {
-            println!("Updating HTB challenges...");
-            if let Err(why) = update_htb_challenges(&lock.htb_api) {
-                eprintln!("Error updating HTB challenges/machines: {:?}", why);
-            }
+        let guard = block_on(data_arc1.lock());
 
-            println!("Processing current rank...");
-            if let Err(why) = process_rank_status(lock) {
-                eprintln!("Error updating team rank status: {:?}", why);
-            }
+        println!("Updating HTB challenges...");
+        if let Err(why) = update_htb_challenges(&guard.htb_api) {
+            eprintln!("Error updating HTB challenges/machines: {:?}", why);
+        }
+
+        println!("Processing current rank...");
+        if let Err(why) = process_rank_status(guard) {
+            eprintln!("Error updating team rank status: {:?}", why);
         }
 
         // Sleep for a day.
@@ -185,15 +193,15 @@ async fn main() {
     });
 
     std::thread::spawn(move || loop {
-        if let Ok(lock) = data_arc2.lock().as_mut() {
-            println!("Polling for new solves...");
-            match process_new_solves(lock) {
-                Ok(_) => {
-                    println!("Successfully processed HTB solves!");
-                }
-                Err(why) => {
-                    eprintln!("Error processing HTB solves: {:?}", why);
-                }
+        let guard = block_on(data_arc2.lock());
+
+        println!("Polling for new solves...");
+        match process_new_solves(guard) {
+            Ok(_) => {
+                println!("Successfully processed HTB solves!");
+            }
+            Err(why) => {
+                eprintln!("Error processing HTB solves: {:?}", why);
             }
         }
 

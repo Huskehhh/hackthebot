@@ -1,6 +1,6 @@
 use std::time::Duration;
 
-use anyhow::Error;
+use color_eyre::eyre::Error;
 use reqwest::{Client, ClientBuilder};
 use serde_json::json;
 

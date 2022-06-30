@@ -29,6 +29,7 @@ A discord bot that announces the solves of a HTB team.
     HTB_CHANNEL_ID=
     HASURA_API_KEY=
     HASURA_API_URL=
+    APPLICATION_ID=
     ```
 
 ## Commands
