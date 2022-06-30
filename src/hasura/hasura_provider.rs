@@ -33,6 +33,9 @@ impl GraphQLProvider for HasuraProvider {
 
         if let Some(solving_users) = response_body.data {
             solving_users.htb_solves.into_iter().for_each(|solve| {
+                if solvers.contains(&solve.user_name) {
+                    return;
+                }
                 solvers.push(solve.user_name);
             });
         }
