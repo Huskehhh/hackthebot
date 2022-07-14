@@ -82,7 +82,7 @@ pub async fn update_htb_channel_topic_with_stats(
 
 pub fn jwt_still_valid(jwt: &JWTClaims) -> bool {
     let local: DateTime<Local> = Local::now();
-    let unix_epoch = local.timestamp();
+    let unix_epoch = local.timestamp() as f64;
 
     if unix_epoch > jwt.exp {
         return false;

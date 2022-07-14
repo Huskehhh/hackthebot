@@ -167,7 +167,7 @@ pub struct HTBApiClient {
 
 #[derive(Debug, Serialize, Deserialize, Clone, Copy)]
 pub struct JWTClaims {
-    pub exp: i64,
+    pub exp: f64,
 }
 
 pub fn parse_jwt(token: &str) -> Result<JWTClaims, Error> {
