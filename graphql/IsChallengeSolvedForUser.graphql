@@ -1,9 +1,0 @@
-query IsChallengeSolvedForUser($user_id: Int!, $challenge_id: Int!, $challenge_name: String!, $solve_type: String!) {
-  htb_solves(where: {user_id: {_eq: $user_id}, challenge: {name: {_eq: $challenge_name}, htb_id: {_eq: $challenge_id}}, solve_type: {_eq: $solve_type}}) {
-    user_name
-    user_id
-    solve_type
-    id
-    challenge_id
-  }
-}

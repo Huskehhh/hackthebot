@@ -87,7 +87,7 @@ impl HTBApiClient {
         Ok(team_members)
     }
 
-    pub async fn get_recent_team_activity(&self) -> Result<Vec<GetRecentTeamActivityData>, Error> {
+    pub async fn get_recent_team_activity(&self) -> Result<Vec<RecentTeamSolve>, Error> {
         let url = format!(
             "{}/team/activity/{}?n_past_days=90",
             API_URL, &self.config.team_id
@@ -98,7 +98,7 @@ impl HTBApiClient {
             .get(&url)
             .send()
             .await?
-            .json::<Vec<GetRecentTeamActivityData>>()
+            .json::<Vec<RecentTeamSolve>>()
             .await?;
 
         Ok(team_members)
@@ -137,6 +137,21 @@ impl HTBApiClient {
 
     pub async fn get_challenge_categories(&self) -> Result<ListChallengeCategories, Error> {
         let url = format!("{}/challenge/categories/list", API_URL);
+
+        let challenge_categories = self
+            .client
+            .get(&url)
+            .send()
+            .await?
+            .json::<ListChallengeCategories>()
+            .await?;
+
+        Ok(challenge_categories)
+    }
+
+    // https://labs.hackthebox.com/api/v4/challenges?sort_type=asc
+    pub async fn get_challenges(&self) -> Result<ListChallengeCategories, Error> {
+        let url = format!("{}/challenges?sort_type=asc", API_URL);
 
         let challenge_categories = self
             .client

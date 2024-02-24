@@ -15,7 +15,7 @@ pub struct UserActivityData {
     pub activity: Vec<ActivityData>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Eq, PartialEq, Hash)]
 pub struct ActivityData {
     pub date: String,
     pub object_type: String,
@@ -24,6 +24,8 @@ pub struct ActivityData {
     pub id: i64,
     pub name: String,
     pub points: i64,
+    pub machine_avatar: Option<String>,
+    pub challenge_category: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -44,8 +46,8 @@ pub struct GetTeamProfile {
     pub points: i32,
 }
 
-#[derive(Debug, Deserialize)]
-pub struct GetRecentTeamActivityData {
+#[derive(Debug, Deserialize, Hash, Eq, PartialEq)]
+pub struct RecentTeamSolve {
     pub user: UserData,
     pub date: String,
     #[serde(rename = "type")]
@@ -55,9 +57,10 @@ pub struct GetRecentTeamActivityData {
     pub name: String,
     pub points: i64,
     pub challenge_category: Option<String>,
+    pub machine_avatar: Option<String>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Hash, Eq, PartialEq)]
 pub struct UserData {
     pub id: i64,
     pub name: String,
@@ -80,11 +83,11 @@ pub struct ListTeamMembers {
 pub struct ListTeamMembersData {
     pub id: i64,
     pub name: String,
-    pub rank: i32,
-    pub points: i32,
-    pub root_owns: i32,
-    pub user_owns: i32,
-    pub rank_text: String,
+    // pub rank: i32,
+    // pub points: i32,
+    // pub root_owns: i32,
+    // pub user_owns: i32,
+    // pub rank_text: String,
 }
 
 #[derive(Debug, Deserialize)]

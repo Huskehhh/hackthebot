@@ -1,5 +1,0 @@
-mutation InsertChallenge($release_date: String!, $points: Int!, $name: String!, $machine_avatar: String, $difficulty: String!, $category: Int!, $htb_id: Int!) {
-  insert_htb_challenges(objects: {htb_id: $htb_id, name: $name, difficulty: $difficulty, category: $category, points: $points, release_date: $release_date, machine_avatar: $machine_avatar}) {
-    affected_rows
-  }
-}

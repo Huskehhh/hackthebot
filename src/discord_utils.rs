@@ -1,35 +1,23 @@
-use hackthebot::{get_challenge_category_from_id, graphql::graphql_types::Challenge};
-
-use serenity::builder::CreateEmbed;
-use serenity::framework::standard::CommandResult;
+use color_eyre::eyre::Result;
+use hackthebot::Challenge;
 use serenity::{http::Http, model::id::ChannelId};
 
 #[derive(Debug)]
-pub struct SolveToAnnounce<'a> {
+pub struct SolveToAnnounce {
     pub solver: String,
     pub user_id: i64,
     pub solve_type: String,
-    pub challenge: &'a Challenge,
+    pub challenge: Challenge,
 }
 
-pub fn populate_embed_from_challenge(
-    challenge: &Challenge,
-    e: &mut CreateEmbed,
-    solving_users: Option<Vec<String>>,
-) {
-    let challenge_category_name = get_challenge_category_from_id(challenge.category);
-
-    e.title(format!("🏴 {}", challenge.name));
-    e.field("📚 Category", &challenge_category_name, true);
-    e.field("💰 Points", challenge.points, true);
-
-    if let Some(solving_users) = solving_users {
-        let solving_string = solving_users.join(", ");
-        e.field("🏴‍ Solved", solving_string, true);
-    }
-
-    if let Some(avatar) = &challenge.machine_avatar {
-        e.thumbnail(format!("https://www.hackthebox.eu/{}", avatar));
+pub fn get_challenge_category(challenge: &Challenge) -> String {
+    if challenge.challenge_type.to_lowercase().contains("machine") {
+        "Machine".to_owned()
+    } else {
+        match &challenge.challenge_category {
+            Some(challenge_cat) => challenge_cat.clone(),
+            _ => challenge.challenge_type.clone(),
+        }
     }
 }
 
@@ -42,12 +30,12 @@ fn capitalise_first(s: &str) -> String {
 }
 
 pub async fn announce_solve(
-    solve: &SolveToAnnounce<'_>,
+    solve: &SolveToAnnounce,
     channel_id: &ChannelId,
     http: &Http,
-) -> CommandResult {
+) -> Result<()> {
     let challenge = &solve.challenge;
-    let challenge_category_name = get_challenge_category_from_id(challenge.category);
+    let category = get_challenge_category(challenge);
 
     let solve_type = capitalise_first(&solve.solve_type);
 
@@ -68,11 +56,11 @@ pub async fn announce_solve(
         .send_message(http, |message| {
             message.embed(|e| {
                 e.title(content);
-                e.field("📚 Category", &challenge_category_name, true);
-                e.field("💰 Points", &challenge.points, true);
+                e.field("📚 Category", &category, true);
+                e.field("💰 Points", challenge.points, true);
 
                 if let Some(avatar) = &solve.challenge.machine_avatar {
-                    e.thumbnail(format!("https://www.hackthebox.eu/{}", avatar));
+                    e.thumbnail(format!("https://www.hackthebox.eu/{avatar}"));
                 }
 
                 e
