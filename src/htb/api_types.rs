@@ -201,7 +201,7 @@ mod tests {
     fn test_deserialise_recent_activity() {
         let data = read_file_to_string("recent_activity.json");
 
-        let recent_data: Vec<GetRecentTeamActivityData> = serde_json::from_str(&data).unwrap();
+        let recent_data: Vec<RecentTeamSolve> = serde_json::from_str(&data).unwrap();
 
         assert_eq!(recent_data.len(), 2);
         assert_eq!(recent_data[0].name, "Missing in Action".to_string());
